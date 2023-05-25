@@ -1,27 +1,60 @@
-class Board
-  attr_accessor :board, :board
-  def initialize(board)
-    @board = board
+
+class Node
+  attr_accessor :place, :taken, :knight_moves
+  
+  def initialize(place)
+    @place = place
+    @taken = nil
+    @knight_moves = []
+  end
+
+  def get_possible_moves()
+    x, y = @place[0], @place[1]
+    moves = []
+    possibe_nodes = [[x+2, y+1], [x+2, y-1], [x-2, y+1], [x-2, y-1], [x+1, y+2], [x+1, y-2], [x-1, y-2], [x-1, y+2]]
+    for node in possibe_nodes do
+      moves << node if node_on_board(node)
+    end
+    moves
+  end
+
+  def node_on_board(node_array)
+    return true if (node_array[0] >= 0 && node_array[1] >= 0) && (node_array[0] <= 8 && node_array[1] <= 8)
+    false
+  end
+
+end
+
+
+class Board < Node
+  attr_accessor :board
+  def initialize()
+    @board = []
+    create_nodes
   end
 
   def print_board
-    @board.each {|row| p row}
+    @board.each {|node| p node }
+  end
+
+  def create_nodes()
+    9.times do |column| 
+      9.times do |row|
+        @board << Node.new([column, row])
+      end
+    end
+    
   end
 
   def get_node(node_as_array)
     for node in @board
       return node if node.place == node_as_array
     end
+    false
   end
-end
-
-class Node < Board
-  attr_accessor :place, :taken, :adjacent_nodes
   
-  def initialize(place)
-    @place = place
-    @taken = nil
-    @adjacent_knight_moves = []
+  def change_node
+    @board.each {|node| yield(node)}
   end
-end
 
+end
