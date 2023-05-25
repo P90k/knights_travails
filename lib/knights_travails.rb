@@ -19,7 +19,7 @@ class Node
   end
 
   def node_on_board(node_array)
-    return true if (node_array[0] >= 0 && node_array[1] >= 0) && (node_array[0] <= 8 && node_array[1] <= 8)
+    return true if (node_array[0] >= 1 && node_array[1] >= 1) && (node_array[0] <= 8 && node_array[1] <= 8)
     false
   end
 
@@ -31,6 +31,7 @@ class Board < Node
   def initialize()
     @board = []
     create_nodes
+    add_possible_knight_moves
   end
 
   def print_board
@@ -40,7 +41,7 @@ class Board < Node
   def create_nodes()
     9.times do |column| 
       9.times do |row|
-        @board << Node.new([column, row])
+        @board << Node.new([column, row]) unless column == 0 || row == 0
       end
     end
     
@@ -55,6 +56,16 @@ class Board < Node
   
   def change_node
     @board.each {|node| yield(node)}
+  end
+
+  def add_possible_knight_moves()
+    change_node do |node|
+    x, y = node.place[0], node.place[1]
+    possible_nodes = [[x+2, y+1], [x+2, y-1], [x-2, y+1], [x-2, y-1], [x+1, y+2], [x+1, y-2], [x-1, y-2], [x-1, y+2]]
+    possible_nodes.each do |move|
+      node.knight_moves << move if node_on_board(move)
+    end
+  end
   end
 
 end
