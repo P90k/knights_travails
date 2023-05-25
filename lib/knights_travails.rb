@@ -8,16 +8,6 @@ class Node
     @knight_moves = []
   end
 
-  def get_possible_moves()
-    x, y = @place[0], @place[1]
-    moves = []
-    possibe_nodes = [[x+2, y+1], [x+2, y-1], [x-2, y+1], [x-2, y-1], [x+1, y+2], [x+1, y-2], [x-1, y-2], [x-1, y+2]]
-    for node in possibe_nodes do
-      moves << node if node_on_board(node)
-    end
-    moves
-  end
-
   def node_on_board(node_array)
     return true if (node_array[0] >= 1 && node_array[1] >= 1) && (node_array[0] <= 8 && node_array[1] <= 8)
     false
