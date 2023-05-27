@@ -37,11 +37,9 @@ class Board < Node
     
   end
 
-  def get_node(node_as_array)
-    for node in @board
-      return node if node.place == node_as_array
-    end
-    false
+  def get_node(desired_square)
+    @board.each {|node| return node if node.place == desired_square}
+    false # if no node is found return false
   end
   
   def change_node
