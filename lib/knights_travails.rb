@@ -56,17 +56,15 @@ class Board < Node
     end
   end
 
-  def breadth_first_search(node_as_array, node_to_look_for)
+  def breadth_first_search(starting_square, desired_square)
     nodes_to_visit = []
     nodes_visited = []
-    get_node(node_as_array).knight_moves.each {|node| nodes_to_visit << node}
-    nodes_visited << node_as_array
-    i = 0
+    get_node(starting_square).knight_moves.each {|square| nodes_to_visit << square}
+    nodes_visited << starting_square
     while nodes_to_visit.length > 0 do
-      i+=1
       current_node = nodes_to_visit.shift
       nodes_visited << current_node
-      return [current_node, nodes_visited.uniq] if current_node == node_to_look_for
+      return [current_node, nodes_visited.uniq] if current_node == desired_square
       get_node(current_node).knight_moves.each {|node| nodes_to_visit << node}
     end
   end 
